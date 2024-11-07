@@ -99,19 +99,19 @@ const allLogin = async (req, res) => {
         .json({ message: "유효하지 않은 로그인 유형입니다." });
     }
 
-    // Fetch user info from the database
+    // 사용자 데이터 베이스 확인
     const result = await database.query(
       `SELECT * FROM ${tableName} WHERE ${idField} = $1`,
       [username]
     );
     const user = result.rows[0];
 
-    // Validate user existence
+    // 유효한 사용자
     if (!user) {
       return res.status(401).json({ message: "아이디가 존재하지 않습니다." });
     }
 
-    // Validate password
+    // 패스워드 확인
     if (isPasswordEncrypted) {
       const isPasswordMatch = await bcrypt.compare(password, user[pwField]);
       if (!isPasswordMatch) {
