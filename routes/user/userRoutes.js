@@ -9,6 +9,7 @@ const {
   updatePassword,
   verifyUser,
   submitConsultRequest,
+  getCustomerConsult,
 } = require("../../controllers/user/userController");
 
 router.post("/sign_up", signUp);
@@ -20,5 +21,6 @@ router.post("/verify_email", verifyNumber);
 router.post("/update_pass", updatePassword);
 router.post("/verify_user", verifyUser);
 router.post("/submit_consult", submitConsultRequest);
+router.get("/consultations/:userId", getCustomerConsult);
 
 module.exports = router;
