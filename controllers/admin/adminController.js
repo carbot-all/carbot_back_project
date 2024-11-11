@@ -79,6 +79,7 @@ const mycarTF = async (req, res) => {
 // 공지사항 추가
 const addNotice = async (req, res) => {
   const { admin_id, notice_title, notice_category, notice_content } = req.body;
+  console.log("Received data:", req.body); // 디버깅용 로그 추가
 
   try {
     // admin_id로 admin_no 조회

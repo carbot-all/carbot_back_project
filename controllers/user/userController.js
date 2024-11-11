@@ -256,6 +256,7 @@ const emailAuth = async (req, res) => {
 
 const verifyNumber = (req, res) => {
   const { email, code } = req.body; // code가 요청에서 제대로 전달되었는지 확인
+  console.log("email: ", email);
 
   if (!authNumbers[email]) {
     return res.status(400).send("인증번호가 존재하지 않거나 만료되었습니다.");
@@ -300,18 +301,21 @@ const verifyUser = async (req, res) => {
   }
 };
 
-// 비밀번호 찾기
+// 비밀번호 재설정
 const updatePassword = async (req, res) => {
-  const { new_password, customer_id } = req.body; // 요청 본문에서 데이터 추출
+  const { new_password, customer_email } = req.body; // 요청 본문에서 데이터 추출
+  console.log("id", customer_email);
+  console.log("pw", new_password);
 
   try {
     const salt = 10;
     const newhashedPassword = await bcrypt.hash(new_password, salt); // 비밀번호 해시화
 
     // 데이터베이스 쿼리
-    const changes = `UPDATE customers SET customer_pw = $1, updated_at = NOW() WHERE customer_id = $2`;
-    const pw_values = [newhashedPassword, customer_id];
+    const changes = `UPDATE customers SET customer_pw = $1 WHERE customer_email = $2`;
+    const pw_values = [newhashedPassword, customer_email];
     await database.query(changes, pw_values);
+    console.log("new", newhashedPassword);
 
     // 응답으로 성공 메시지 반환
     res
